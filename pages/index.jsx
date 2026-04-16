@@ -378,7 +378,8 @@ function LibraryTab({ library, setLibrary, toast }) {
         const wb = XLSX.read(e.target.result,{type:'array'});
         const lib = parseWorkbook(wb,XLSX);
         await saveLibrary(lib, false);
-        setImportMsg({type:'success',text:`Imported: ${lib.cells.length} cells, ${lib.bms_boards.length} BMS boards, ${lib.design_rules.length} design rules`});
+        const warn = lib._missing?.length ? ` — WARNING: sheets not found, kept existing data: ${lib._missing.join(', ')}` : '';
+        setImportMsg({type: lib._missing?.length ? 'error' : 'success', text:`Imported: ${lib.cells.length} cells, ${lib.bms_boards.length} BMS boards, ${lib.design_rules.length} design rules${warn}`});
       } catch(err) { setImportMsg({type:'error',text:'Parse error: '+err.message}); }
       finally { setImporting(false); }
     };
@@ -390,22 +391,27 @@ function LibraryTab({ library, setLibrary, toast }) {
       const s=wb.Sheets[sheetName]; return s?XLSX.utils.sheet_to_json(s,{header:1,defval:''}):[];
     };
     const num = v => { const n=parseFloat(v); return isNaN(n)?null:n; };
+    const missing=[];
 
     const cells=[];
     const cellRows=getRows('Cells'); const cellHdr=cellRows.find(r=>String(r[0]).includes('Cell Name'));
     if(cellHdr){ cellRows.slice(cellRows.indexOf(cellHdr)+1).forEach((r,i)=>{ const name=String(r[0]||'').trim(); if(!name)return; cells.push({id:'CELL-'+String(i+1).padStart(3,'0'),name,type:String(r[1]||''),status:String(r[2]||''),length_mm:num(r[3]),width_mm:num(r[4]),thickness_mm:num(r[5]),weight_g:num(r[6]),nominal_voltage_v:num(r[7])||3.6,capacity_ah:num(r[8]),energy_wh:num(r[9]),min_temp_c:num(r[15]),max_temp_c:num(r[16]),cost_usd:null}); }); }
+    else { missing.push('Cells'); }
 
     const bms=[]; const bmsRows=getRows('BMS Boards'); const bmsHdr=bmsRows.find(r=>String(r[0]).includes('BMS Name'));
     if(bmsHdr){ bmsRows.slice(bmsRows.indexOf(bmsHdr)+1).forEach((r,i)=>{ const name=String(r[0]||'').trim(); if(!name)return; const m=String(r[1]||'').match(/(\d+)[–-](\d+)/); bms.push({id:'BMS-'+String(i+1).padStart(3,'0'),name,min_cells:m?+m[1]:1,max_cells:m?+m[2]:4,length_mm:num(r[3]),width_mm:num(r[4]),height_mm:num(r[5]),weight_g:num(r[6]),cost_usd:null}); }); }
+    else { missing.push('BMS Boards'); }
 
     const design_rules=[]; const drRows=getRows('Design Rules'); const drHdr=drRows.find(r=>String(r[0]).includes('Rule ID'));
     if(drHdr){ drRows.slice(drRows.indexOf(drHdr)+1).forEach(r=>{ const id=String(r[0]||'').trim(); if(!id||!String(r[2]||'').trim())return; design_rules.push({id,category:String(r[1]||''),description:String(r[2]||''),value:typeof r[3]==='number'?r[3]:null,unit:String(r[4]||''),mandatory:String(r[5]||'Preferred'),reason:String(r[6]||'')}); }); }
+    else { missing.push('Design Rules'); }
 
     return {
       cells:cells.length?cells:(library?.cells||[]),
       bms_boards:bms.length?bms:(library?.bms_boards||[]),
       thermal:library?.thermal||[], connectors:library?.connectors||[], cases:library?.cases||[], wiring:library?.wiring||[],
-      design_rules:design_rules.length?design_rules:(library?.design_rules||[])
+      design_rules:design_rules.length?design_rules:(library?.design_rules||[]),
+      _missing: missing,
     };
   };
 
@@ -646,7 +652,8 @@ export default function Home() {
     fetch('/api/settings').then(r=>r.json()).then(d=>setSettings(d)).catch(()=>{});
   },[user]);
 
-  if(!user) return <div style={{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',background:'#f4f5f7'}}><span className="spinner"/>Loading…</div>;
+  if(user === undefined) return <div style={{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',background:'#f4f5f7'}}><span className="spinner"/>Loading…</div>;
+  if(!user) return null;
 
   return (
     <>
