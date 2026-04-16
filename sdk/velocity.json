@@ -1,0 +1,7 @@
+{
+  "_note": "Sprint 0 is unpointed (bootstrap). Rolling average excludes unpointed sprints. rollingWindow=0 until at least 1 pointed sprint completes.",
+  "bootstrap": 5,
+  "rollingAverage": 5,
+  "rollingWindow": 0,
+  "history": []
+}

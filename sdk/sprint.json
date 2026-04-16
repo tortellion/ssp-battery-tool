@@ -1,0 +1,23 @@
+{
+  "closed": [
+    {
+      "number": 0,
+      "name": "Sprint 0 — Bootstrap",
+      "goal": "Scaffold sdk/, install Vitest, 3 smoke tests, ratchet floor=3. No findings closed.",
+      "startDate": "2026-04-16",
+      "endDate": "2026-04-16",
+      "status": "DONE",
+      "committed": [],
+      "velocityPoints": 0,
+      "findingsClosed": [],
+      "note": "Unpointed bootstrap sprint. Established test floor=3."
+    }
+  ],
+  "current": {
+    "number": 1,
+    "name": "Sprint 1 — Close Criticals",
+    "goal": "Close C-1, C-2, C-3. Email allowlist, RLS ownership + audit column, margin clamp, regression tests.",
+    "status": "PLANNING",
+    "committed": []
+  }
+}

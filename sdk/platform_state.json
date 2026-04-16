@@ -1,0 +1,44 @@
+{
+  "lastVerified": "2026-04-16",
+  "testCounts": {
+    "actual": 3,
+    "floor": 3,
+    "source": "npm test 2>&1 — 3 passed (3) — Sprint 0 BOOTSTRAP"
+  },
+  "schema": {
+    "tableCount": 3,
+    "policyCount": 5,
+    "source": "grep -c on supabase/schema.sql — Sprint 0 BOOTSTRAP"
+  },
+  "findings": {
+    "open": ["C-1","C-2","C-3","H-1","H-2","H-3","H-4","H-5","H-6","H-7","M-1","M-2","M-3","M-4","M-5","M-6","M-7","M-8","M-9","M-10","L-1","L-2","L-3","L-4","L-5"],
+    "closed": []
+  },
+  "knownBugs": [
+    { "id": "C-1", "description": "Any authenticated user can wipe shared library via PUT /api/library", "status": "OPEN" },
+    { "id": "C-2", "description": "Open self-registration — no domain restriction", "status": "OPEN" },
+    { "id": "C-3", "description": "margin_percent=100 produces Infinity quote price", "status": "OPEN" },
+    { "id": "H-1", "description": "No rate limiting on Anthropic API routes", "status": "OPEN" },
+    { "id": "H-2", "description": "Client-supplied library accepted without verification", "status": "OPEN" },
+    { "id": "H-3", "description": "Prompt injection via user fields — client-side sanitize only", "status": "OPEN" },
+    { "id": "H-4", "description": "History records rendered without guardrail re-validation", "status": "OPEN" },
+    { "id": "H-5", "description": "library.js GET does not distinguish error types", "status": "OPEN" },
+    { "id": "H-6", "description": "configurations table missing UPDATE/DELETE RLS policies", "status": "OPEN" },
+    { "id": "H-7", "description": "user_email not fetched in history GET — all avatars show ??", "status": "OPEN" },
+    { "id": "M-1", "description": "sanitizeText is client-side security theater", "status": "OPEN" },
+    { "id": "M-2", "description": "calcCOGS allows negative/zero cost_usd", "status": "OPEN" },
+    { "id": "M-3", "description": "BANNED_RE misses semantic Wh/kg equivalents", "status": "OPEN" },
+    { "id": "M-4", "description": "validateConfigResponse rejects bms_g=0", "status": "OPEN" },
+    { "id": "M-5", "description": "Dimension notes check is substring-only, no arithmetic", "status": "OPEN" },
+    { "id": "M-6", "description": "History search concatenates without null guards", "status": "OPEN" },
+    { "id": "M-7", "description": "Every cell edit triggers a full library PUT", "status": "OPEN" },
+    { "id": "M-8", "description": "deleteRow uses window.confirm with no undo", "status": "OPEN" },
+    { "id": "M-9", "description": "settings.js upsert return value not checked", "status": "OPEN" },
+    { "id": "M-10", "description": "createAdminClient is dead code with service role key", "status": "OPEN" },
+    { "id": "L-1", "description": "quoteMarginkUsed typo", "status": "OPEN" },
+    { "id": "L-2", "description": "parseWorkbook silent fallback on missing sheets", "status": "OPEN" },
+    { "id": "L-3", "description": "xlsx 0.18.5 — CVE-2023-30533 prototype pollution", "status": "OPEN" },
+    { "id": "L-4", "description": "Loading flash before middleware redirect", "status": "OPEN" },
+    { "id": "L-5", "description": "@supabase/auth-helpers-nextjs deprecated", "status": "OPEN" }
+  ]
+}

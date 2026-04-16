@@ -1,0 +1,24 @@
+{
+  "number": 0,
+  "name": "Sprint 0 — Bootstrap",
+  "goal": "Scaffold sdk/, install Vitest, 3 smoke tests, ratchet floor=3. No findings closed.",
+  "startDate": "2026-04-16",
+  "endDate": "2026-04-16",
+  "status": "DONE",
+  "committed": [],
+  "velocityPoints": 0,
+  "prs": [],
+  "testDelta": {
+    "before": 0,
+    "after": 3,
+    "delta": 3
+  },
+  "schemaDelta": {
+    "tablesBefore": 3,
+    "tablesAfter": 3,
+    "policiesBefore": 5,
+    "policiesAfter": 5
+  },
+  "findingsClosed": [],
+  "notes": "Unpointed bootstrap sprint. npm install run first time. .env.local created from example. Build confirmed clean. Vitest installed, 3 smoke tests green. Floor established at 3."
+}

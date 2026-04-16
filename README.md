@@ -2,6 +2,17 @@
 
 Real web application. Shared library, shared history, email/password login. Deployed on Vercel + Supabase.
 
+## Sprint State
+
+| Item | Value |
+|------|-------|
+| Current sprint | [sdk/sprint.json](sdk/sprint.json) |
+| Open findings | [sdk/AUDIT_FINDINGS.md](sdk/AUDIT_FINDINGS.md) |
+| Test floor | 3 (ratchet — never drop below) |
+| Board | [sdk/board.json](sdk/board.json) |
+
+Ratchet floor: `npm test` must always pass ≥ 3 tests. Any PR that drops the count is a hard stop.
+
 ---
 
 ## Setup (~15 minutes)
