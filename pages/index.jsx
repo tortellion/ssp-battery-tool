@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import BatteryLayout from '../components/BatteryLayout';
 import { useUser, useSupabaseClient } from '@supabase/auth-helpers-react';
 import { useRouter } from 'next/router';
 
@@ -329,6 +330,13 @@ function ConfigureTab({ library, settings, userEmail }) {
               <div className="warn-box" style={{marginTop:12}}>Cost data incomplete — add <strong>cost_usd</strong> values to cells and BMS boards in the Library tab. Contact Derek Stewart for COGS figures.</div>
             )}
           </div>
+        )}
+
+        {selectedCfg && (
+          <BatteryLayout
+            config={selectedCfg}
+            enclosure={{ length_mm: +form.length, width_mm: +form.width, depth_mm: +form.depth }}
+          />
         )}
       </div>
     </div>
