@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import BatteryLayout from '../components/BatteryLayout';
+import { downloadDXF } from '../lib/generateDXF';
 import { useUser, useSupabaseClient } from '@supabase/auth-helpers-react';
 import { useRouter } from 'next/router';
 
@@ -170,7 +171,7 @@ function ConfigureTab({ library, settings, userEmail }) {
       const qd = calcCOGS(cfg,library,settings);
       setQuoteData(qd); setQuoteMarginkUsed(settings.margin_percent); setQuoteStale(false);
       // Save to history
-      await fetch('/api/history',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({company:form.company,product:form.product,vertical:form.vertical,voltage:form.voltage,capacity_wh:cfg.total_energy_wh,spec_content:data,cfg_summary:{total_cells:cfg.total_cells,cell_id:cfg.cell_id,nominal_voltage_v:cfg.nominal_voltage_v}})});
+      await fetch('/api/history',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({company:form.company,product:form.product,vertical:form.vertical,voltage:form.voltage,capacity_wh:cfg.total_energy_wh,spec_content:data,cfg_summary:{total_cells:cfg.total_cells,cell_id:cfg.cell_id,nominal_voltage_v:cfg.nominal_voltage_v,series_count:cfg.series_count,parallel_count:cfg.parallel_count,enclosure_length_mm:+form.length,enclosure_width_mm:+form.width,enclosure_depth_mm:+form.depth}})});
     } catch(e) {
       setSpecErr(e.message||'Spec sheet engine unavailable.');
     } finally { setSpecLoading(false); }
@@ -302,6 +303,18 @@ function ConfigureTab({ library, settings, userEmail }) {
           <div style={{marginTop:14}}>
             <div style={{display:'flex',gap:8,marginBottom:10}}>
               <button className="btn btn-ghost" onClick={()=>window.print()}>Print / Save as PDF</button>
+              <button
+                className="btn btn-ghost"
+                onClick={() =>
+                  downloadDXF(
+                    selectedCfg,
+                    { length_mm: +form.length, width_mm: +form.width, depth_mm: +form.depth },
+                    `SSP_${form.product.replace(/\s+/g, '_')}_${selectedCfg.series_count}S${selectedCfg.parallel_count}P.dxf`
+                  )
+                }
+              >
+                Export DXF
+              </button>
             </div>
             <SpecSheet content={specContent}/>
 
@@ -560,6 +573,23 @@ function HistoryTab() {
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}}>
               <div><strong>{selected.product}</strong><br/><span style={{fontSize:11,color:'#64748b'}}>{selected.company} · {new Date(selected.created_at).toLocaleDateString()}</span></div>
               <button className="btn btn-ghost" onClick={()=>window.print()}>Print</button>
+              <button
+                className="btn btn-ghost"
+                onClick={() => {
+                  if (!selected.cfg_summary) return;
+                  downloadDXF(
+                    selected.cfg_summary,
+                    {
+                      length_mm: selected.cfg_summary.enclosure_length_mm || 265,
+                      width_mm:  selected.cfg_summary.enclosure_width_mm  || 125,
+                      depth_mm:  selected.cfg_summary.enclosure_depth_mm  || 28,
+                    },
+                    `SSP_${selected.product}_${selected.cfg_summary.series_count}S${selected.cfg_summary.parallel_count}P.dxf`
+                  );
+                }}
+              >
+                Export DXF
+              </button>
             </div>
             <SpecSheet content={selected.spec_content}/>
           </div>
