@@ -1,5 +1,6 @@
 import { createServerClient } from '../../lib/supabase';
 import { SPEC_SYSTEM_PROMPT, validateSpecSheet } from '../../lib/guardrails';
+import { checkRateLimit } from '../../lib/rateLimiter';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
@@ -7,6 +8,13 @@ export default async function handler(req, res) {
   const supabase = createServerClient(req, res);
   const { data: { session } } = await supabase.auth.getSession();
   if (!session) return res.status(401).json({ error: 'Unauthorized' });
+
+  // H-1: per-user rate limit — 20 requests/60s
+  const rl = checkRateLimit(session.user.id);
+  if (!rl.allowed) {
+    res.setHeader('Retry-After', rl.retryAfter);
+    return res.status(429).json({ error: 'Rate limit exceeded. Try again shortly.' });
+  }
 
   const { configuration, customerInfo } = req.body;
   if (!configuration || !customerInfo) return res.status(400).json({ error: 'Missing fields' });
