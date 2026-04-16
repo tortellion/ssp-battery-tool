@@ -1,4 +1,5 @@
 import { createServerClient } from '../../lib/supabase';
+import { DEMO_LIBRARY } from '../../lib/demoLibrary';
 import { CONFIG_SYSTEM_PROMPT, validateConfigResponse } from '../../lib/guardrails';
 
 export default async function handler(req, res) {
@@ -9,8 +10,19 @@ export default async function handler(req, res) {
   const { data: { session } } = await supabase.auth.getSession();
   if (!session) return res.status(401).json({ error: 'Unauthorized' });
 
-  const { payload, library, design_rules } = req.body;
-  if (!payload || !library) return res.status(400).json({ error: 'Missing payload or library' });
+  const { payload } = req.body;
+  if (!payload) return res.status(400).json({ error: 'Missing payload' });
+
+  // H-2: fetch canonical library server-side; never trust client-supplied library
+  const { data: libRow, error: libErr } = await supabase
+    .from('component_library')
+    .select('data')
+    .limit(1)
+    .single();
+  if (libErr && libErr.code !== 'PGRST116') {
+    return res.status(503).json({ error: 'Component library unavailable' });
+  }
+  const library = libRow?.data ?? DEMO_LIBRARY;
 
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -24,7 +36,7 @@ export default async function handler(req, res) {
         model: 'claude-sonnet-4-6',
         max_tokens: 4000,
         system: CONFIG_SYSTEM_PROMPT,
-        messages: [{ role: 'user', content: JSON.stringify({ requirements: payload, library, design_rules }) }]
+        messages: [{ role: 'user', content: JSON.stringify({ requirements: payload, library, design_rules: library.design_rules }) }]
       })
     });
 
