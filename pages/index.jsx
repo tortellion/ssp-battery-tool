@@ -20,7 +20,7 @@ const BANNED_INJECTION = ['ignore previous instructions','ignore all instruction
 
 function nm(s){ if(typeof s!=='string')return ''; return s.normalize('NFKC').toLowerCase().replace(/[\u200B-\u200D\uFEFF]/g,'').replace(/\s+/g,' ').trim(); }
 
-function sanitizeText(v,field,onWarn){
+function warnOnSuspiciousInput(v,field,onWarn){
   if(!v) return v;
   if(BANNED_INJECTION.some(p=>nm(v).includes(p))){ onWarn(field); return '[Input sanitized — review before use]'; }
   return v;
@@ -115,7 +115,7 @@ function ConfigureTab({ library, settings, userEmail }) {
   const [selectedCfg, setSelectedCfg] = useState(null);
   const [specContent, setSpecContent] = useState(null);
   const [quoteData, setQuoteData] = useState(null);
-  const [quoteMarginkUsed, setQuoteMarginkUsed] = useState(null);
+  const [quoteMarginUsed, setQuoteMarginkUsed] = useState(null);
   const [quoteStale, setQuoteStale] = useState(false);
 
   const [configLoading, setConfigLoading] = useState(false);
@@ -126,7 +126,7 @@ function ConfigureTab({ library, settings, userEmail }) {
   const [ndaaWarn, setNdaaWarn] = useState(false);
   const [injectionWarnFields, setInjectionWarnFields] = useState([]);
 
-  useEffect(()=>{ if(quoteMarginkUsed!==null&&settings.margin_percent!==quoteMarginkUsed) setQuoteStale(true); },[settings.margin_percent]);
+  useEffect(()=>{ if(quoteMarginUsed!==null&&settings.margin_percent!==quoteMarginUsed) setQuoteStale(true); },[settings.margin_percent]);
 
   const VERTICALS=['Defense/Autonomy','Ground Robotics','Defense Primes','EV & Powersports','Aviation & eVTOL','Rehab & Medical','Ag Tech & OPE','Maritime & Naval','Construction','Soldier-Worn Power','Underground Mining','Hazardous Area','Energy Storage / Critical Buildings'];
 
@@ -138,8 +138,8 @@ function ConfigureTab({ library, settings, userEmail }) {
       const compOther = checkNDAA(form.comp_other, ()=>setNdaaWarn(true));
       const warnField = f => setInjectionWarnFields(prev => prev.includes(f)?prev:[...prev,f]);
       const payload = {
-        company: sanitizeText(form.company,'company_name',warnField),
-        product: sanitizeText(form.product,'product_name',warnField),
+        company: warnOnSuspiciousInput(form.company,'company_name',warnField),
+        product: warnOnSuspiciousInput(form.product,'product_name',warnField),
         vertical: form.vertical,
         dimensions:{ length_mm:+form.length, width_mm:+form.width, depth_mm:+form.depth },
         max_weight_g:+form.max_weight||null,
@@ -148,7 +148,7 @@ function ConfigureTab({ library, settings, userEmail }) {
         target_capacity_wh:+form.target_wh||null,
         temp_range:{ min_c:+form.min_temp, max_c:+form.max_temp },
         ip:form.ip, vibration:form.vibe,
-        application: sanitizeText(form.app,'application',warnField),
+        application: warnOnSuspiciousInput(form.app,'application',warnField),
         compliance:['ITAR','DFARS','Buy American','UN-38','UL','CE'].filter((_,i)=>[form.itar,form.dfars,form.ba,form.un38,form.ul,form.ce][i]),
         compliance_other: compOther
       };
@@ -315,7 +315,7 @@ function ConfigureTab({ library, settings, userEmail }) {
                 </div>
                 {quoteStale && (
                   <div className="warn-box" style={{marginBottom:10,display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-                    <span>Quote at {quoteMarginkUsed}% margin. Current: {settings.margin_percent}%.</span>
+                    <span>Quote at {quoteMarginUsed}% margin. Current: {settings.margin_percent}%.</span>
                     <button className="btn btn-gold btn-sm" onClick={()=>recalc(selectedCfg)}>Recalculate</button>
                   </div>
                 )}
