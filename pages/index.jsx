@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import BatteryLayout from '../components/BatteryLayout';
 import { useUser, useSupabaseClient } from '@supabase/auth-helpers-react';
 import { useRouter } from 'next/router';
+import { validateSpecSheet } from '../lib/guardrails';
 
 // ── CONSTANTS ──────────────────────────────────────────────────────────────
 const NUMERIC_COLS = new Set(['length_mm','width_mm','thickness_mm','weight_g','nominal_voltage_v','capacity_ah','energy_wh','min_temp_c','max_temp_c','cost_usd','min_cells','max_cells','height_mm','internal_length_mm','internal_width_mm','internal_depth_mm','wall_thickness_mm','value','gauge_awg']);
@@ -563,6 +564,12 @@ function HistoryTab() {
               <div><strong>{selected.product}</strong><br/><span style={{fontSize:11,color:'#64748b'}}>{selected.company} · {new Date(selected.created_at).toLocaleDateString()}</span></div>
               <button className="btn btn-ghost" onClick={()=>window.print()}>Print</button>
             </div>
+            {/* H-4: re-validate stored spec_content against current guardrails */}
+            {(() => { const chk = validateSpecSheet(selected.spec_content); return !chk.ok && (
+              <div style={{background:'#450a0a',border:'1px solid #dc2626',borderRadius:6,padding:'10px 14px',marginBottom:12,fontSize:11,color:'#fca5a5'}}>
+                <strong>Guardrail warning:</strong> This historical record contains {chk.violations.length} violation{chk.violations.length !== 1 ? 's' : ''} under current rules — do not send to customers without engineering review.
+              </div>
+            ); })()}
             <SpecSheet content={selected.spec_content}/>
           </div>
         )}

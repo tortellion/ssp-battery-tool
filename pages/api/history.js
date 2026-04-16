@@ -1,4 +1,5 @@
 import { createServerClient } from '../../lib/supabase';
+import { validateSpecSheet } from '../../lib/guardrails';
 
 export default async function handler(req, res) {
   const supabase = createServerClient(req, res);
@@ -20,6 +21,14 @@ export default async function handler(req, res) {
   // POST — save a new configuration result
   if (req.method === 'POST') {
     const { company, product, vertical, voltage, capacity_wh, spec_content, cfg_summary } = req.body;
+
+    // H-4: reject spec_content that fails guardrail validation
+    if (spec_content) {
+      const check = validateSpecSheet(spec_content);
+      if (!check.ok) {
+        return res.status(422).json({ error: 'Spec sheet failed guardrail validation', violations: check.violations });
+      }
+    }
 
     const { data, error } = await supabase
       .from('configurations')
