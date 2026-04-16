@@ -1,0 +1,26 @@
+{
+  "number": 1,
+  "name": "Sprint 1 — Close Criticals",
+  "goal": "Close C-1, C-2, C-3. Email allowlist, RLS ownership + audit column, margin clamp, regression tests.",
+  "startDate": "2026-04-16",
+  "endDate": "2026-04-16",
+  "status": "DONE",
+  "committed": ["TICKET-SSP-001","TICKET-SSP-002","TICKET-SSP-003","TICKET-SSP-004"],
+  "velocityPoints": 13,
+  "prs": [
+    { "ticket": "TICKET-SSP-003", "branch": "ssp-003-margin-clamp",    "sha": "79a3e1d", "mergesha": "d1641b1" },
+    { "ticket": "TICKET-SSP-004", "branch": "ssp-004-regression-tests","sha": "2d5a1a8", "mergesha": "7854684" },
+    { "ticket": "TICKET-SSP-001", "branch": "ssp-001-email-allowlist", "sha": "0bd979a", "mergesha": "49e61f6" },
+    { "ticket": "TICKET-SSP-002", "branch": "ssp-002-rls-ownership",   "sha": "d4729f8", "mergesha": "dcf0617" }
+  ],
+  "testDelta": { "before": 3, "after": 22, "delta": 19 },
+  "schemaDelta": {
+    "tablesBefore": 3, "tablesAfter": 3,
+    "policiesBefore": 5, "policiesAfter": 6,
+    "sqlFilesBefore": 1, "sqlFilesAfter": 2,
+    "note": "SSP-001 added supabase/auth_hook.sql. SSP-002 replaced FOR ALL policy with FOR INSERT + FOR UPDATE (net +1 policy). Added previous_data JSONB column to component_library."
+  },
+  "findingsClosed": ["C-1","C-2","C-3"],
+  "pendingPlaybooks": ["TICKET-SSP-001","TICKET-SSP-002"],
+  "notes": "SSP-001 and SSP-002 are MERGED_PENDING_PLAYBOOK — SQL must be run in Supabase dashboard to activate. C-3 is fully active (code-only fix). All 22 tests green at close."
+}

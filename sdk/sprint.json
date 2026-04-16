@@ -11,12 +11,24 @@
       "velocityPoints": 0,
       "findingsClosed": [],
       "note": "Unpointed bootstrap sprint. Established test floor=3."
+    },
+    {
+      "number": 1,
+      "name": "Sprint 1 — Close Criticals",
+      "goal": "Close C-1, C-2, C-3. Email allowlist, RLS ownership + audit column, margin clamp, regression tests.",
+      "startDate": "2026-04-16",
+      "endDate": "2026-04-16",
+      "status": "DONE",
+      "committed": ["TICKET-SSP-001","TICKET-SSP-002","TICKET-SSP-003","TICKET-SSP-004"],
+      "velocityPoints": 13,
+      "findingsClosed": ["C-1","C-2","C-3"],
+      "note": "SSP-001/002 MERGED_PENDING_PLAYBOOK. C-3 fully active. Tests 3→22."
     }
   ],
   "current": {
-    "number": 1,
-    "name": "Sprint 1 — Close Criticals",
-    "goal": "Close C-1, C-2, C-3. Email allowlist, RLS ownership + audit column, margin clamp, regression tests.",
+    "number": 2,
+    "name": "Sprint 2 — Exploitable Highs",
+    "goal": "Close H-1 (rate limiting), H-2 (server-side library fetch), H-3 (server-side sanitization + output whitelist), H-4 (guardrail validation on history).",
     "status": "PLANNING",
     "committed": []
   }

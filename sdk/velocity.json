@@ -1,7 +1,17 @@
 {
-  "_note": "Sprint 0 is unpointed (bootstrap). Rolling average excludes unpointed sprints. rollingWindow=0 until at least 1 pointed sprint completes.",
+  "_note": "Sprint 0 unpointed (bootstrap). rollingAverage = mean of last 3 pointed sprints.",
   "bootstrap": 5,
-  "rollingAverage": 5,
-  "rollingWindow": 0,
-  "history": []
+  "rollingAverage": 13,
+  "rollingWindow": 1,
+  "history": [
+    {
+      "sprint": 1,
+      "name": "Sprint 1 — Close Criticals",
+      "endDate": "2026-04-16",
+      "pointsDelivered": 13,
+      "committed": ["TICKET-SSP-001","TICKET-SSP-002","TICKET-SSP-003","TICKET-SSP-004"],
+      "findingsClosed": ["C-1","C-2","C-3"],
+      "note": "All 13 points delivered. SSP-001/002 pending Supabase playbook execution."
+    }
+  ]
 }

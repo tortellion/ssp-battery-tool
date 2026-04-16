@@ -23,7 +23,7 @@ This atomically overwrites the singleton library row for every user on the team.
 
 **Fix:** Add an updated_by ownership gate, implement a version counter or previous_data JSONB backup column, restrict FOR ALL RLS policy to FOR INSERT only with explicit FOR UPDATE/DELETE policies with tighter USING predicate. Minimum viable: store the previous JSONB value in an audit column before every upsert.
 
-**STATUS: OPEN**
+**STATUS: CLOSED — TICKET-SSP-002, sha=d4729f8, 2026-04-16. Regression: __tests__/security/c1-library-rls.test.js. MERGED_PENDING_PLAYBOOK: run sdk/playbooks/TICKET-SSP-002.md in Supabase dashboard.**
 
 ---
 
@@ -38,7 +38,7 @@ Navigate to https://[deployed-url]/login, click "Create one", enter any email (e
 
 **Fix:** Supabase Auth supports email domain allowlisting via a custom hook or a before sign-up trigger. Add a Postgres function that rejects signups with email NOT LIKE '%@solidstatepower.com'. Alternatively, disable self-signup and use admin-invited-only flows.
 
-**STATUS: OPEN**
+**STATUS: CLOSED — TICKET-SSP-001, sha=0bd979a, 2026-04-16. Regression: __tests__/security/c2-open-registration.test.js. MERGED_PENDING_PLAYBOOK: run sdk/playbooks/TICKET-SSP-001.md in Supabase dashboard.**
 
 ---
 
@@ -53,7 +53,7 @@ In Settings tab, set "Margin %" to 100. Click Save. Generate a configuration and
 
 **Fix:** Clamp margin_percent server-side in settings.js to [0, 99] before storing. Add min="0" max="99" to the input. Guard calcCOGS: if 1 - margin_percent/100 <= 0, return null with a specific error.
 
-**STATUS: OPEN**
+**STATUS: CLOSED — TICKET-SSP-003, sha=79a3e1d, 2026-04-16. Regression: __tests__/security/c3-margin-clamp.test.js (10 cases). ACTIVE — no playbook required.**
 
 ---
 

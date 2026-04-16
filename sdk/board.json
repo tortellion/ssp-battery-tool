@@ -2,13 +2,9 @@
   "_note": "Ticket IDs derived from audit findings. One ticket per finding. BACKLOG entries are TO_BE_WRITTEN — ticket files written when moved to READY.",
   "lastUpdated": "2026-04-16",
   "sprintStatus": "PLANNING",
-  "currentSprint": 1,
+  "currentSprint": 2,
   "lanes": {
     "BACKLOG": [
-      "TICKET-SSP-001",
-      "TICKET-SSP-002",
-      "TICKET-SSP-003",
-      "TICKET-SSP-004",
       "TICKET-SSP-005",
       "TICKET-SSP-006",
       "TICKET-SSP-007",
@@ -33,13 +29,18 @@
     ],
     "READY": [],
     "IN_PROGRESS": [],
-    "DONE": []
+    "DONE": [
+      "TICKET-SSP-001",
+      "TICKET-SSP-002",
+      "TICKET-SSP-003",
+      "TICKET-SSP-004"
+    ]
   },
   "ticketIndex": {
-    "TICKET-SSP-001": { "finding": "C-2", "title": "Email-domain allowlist on signup", "sprint": 1, "status": "BACKLOG" },
-    "TICKET-SSP-002": { "finding": "C-1", "title": "RLS ownership + audit column on component_library", "sprint": 1, "status": "BACKLOG" },
-    "TICKET-SSP-003": { "finding": "C-3", "title": "Clamp margin_percent at every read site", "sprint": 1, "status": "BACKLOG" },
-    "TICKET-SSP-004": { "finding": "C-1/C-2/C-3", "title": "Adversarial regression tests for criticals", "sprint": 1, "status": "BACKLOG" },
+    "TICKET-SSP-001": { "finding": "C-2", "title": "Email-domain allowlist on signup", "sprint": 1, "status": "DONE", "sha": "0bd979a", "mergedAt": "2026-04-16", "note": "MERGED_PENDING_PLAYBOOK" },
+    "TICKET-SSP-002": { "finding": "C-1", "title": "RLS ownership + audit column on component_library", "sprint": 1, "status": "DONE", "sha": "d4729f8", "mergedAt": "2026-04-16", "note": "MERGED_PENDING_PLAYBOOK" },
+    "TICKET-SSP-003": { "finding": "C-3", "title": "Clamp margin_percent at every read site", "sprint": 1, "status": "DONE", "sha": "79a3e1d", "mergedAt": "2026-04-16", "note": "ACTIVE" },
+    "TICKET-SSP-004": { "finding": "C-1/C-2/C-3", "title": "Adversarial regression tests for criticals", "sprint": 1, "status": "DONE", "sha": "2d5a1a8", "mergedAt": "2026-04-16" },
     "TICKET-SSP-005": { "finding": "H-1", "title": "Rate limit Anthropic API routes per user", "sprint": 2, "status": "BACKLOG" },
     "TICKET-SSP-006": { "finding": "H-2", "title": "Fetch library server-side in configure.js", "sprint": 2, "status": "BACKLOG" },
     "TICKET-SSP-007": { "finding": "H-3", "title": "Server-side prompt sanitization + output whitelist", "sprint": 2, "status": "BACKLOG" },
