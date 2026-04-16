@@ -25,11 +25,18 @@ export default async function handler(req, res) {
     const { library, is_demo = false } = req.body;
     if (!library) return res.status(400).json({ error: 'Missing library' });
 
-    // Upsert — there's only ever one row (enforced by unique index on TRUE)
+    // Fetch current data to store as previous_data (audit trail — C-1 fix)
+    const { data: existing } = await supabase
+      .from('component_library')
+      .select('data')
+      .limit(1)
+      .single();
+
     const { error } = await supabase
       .from('component_library')
       .upsert({
         data: library,
+        previous_data: existing?.data ?? null,
         is_demo,
         updated_by: session.user.id,
         updated_at: new Date().toISOString()

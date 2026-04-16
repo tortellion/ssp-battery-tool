@@ -3,11 +3,12 @@
 
 -- ── Component Library (one shared record for the whole team) ──────────────
 CREATE TABLE IF NOT EXISTS component_library (
-  id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  data         JSONB NOT NULL,
-  is_demo      BOOLEAN DEFAULT TRUE,
-  updated_by   UUID REFERENCES auth.users(id),
-  updated_at   TIMESTAMPTZ DEFAULT NOW()
+  id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  data          JSONB NOT NULL,
+  previous_data JSONB,
+  is_demo       BOOLEAN DEFAULT TRUE,
+  updated_by    UUID REFERENCES auth.users(id),
+  updated_at    TIMESTAMPTZ DEFAULT NOW()
 );
 
 -- Only one library record allowed
@@ -38,14 +39,23 @@ ALTER TABLE component_library ENABLE ROW LEVEL SECURITY;
 ALTER TABLE configurations    ENABLE ROW LEVEL SECURITY;
 ALTER TABLE user_settings     ENABLE ROW LEVEL SECURITY;
 
--- Library: any authenticated user can read; authenticated users can upsert
+-- Library: any authenticated user can read
 CREATE POLICY "Authenticated users can read library"
   ON component_library FOR SELECT
   TO authenticated USING (TRUE);
 
-CREATE POLICY "Authenticated users can upsert library"
-  ON component_library FOR ALL
-  TO authenticated USING (TRUE) WITH CHECK (TRUE);
+-- Library INSERT: any authenticated user can create the first (and only) row
+CREATE POLICY "Authenticated users can insert library"
+  ON component_library FOR INSERT
+  TO authenticated WITH CHECK (auth.uid() IS NOT NULL);
+
+-- Library UPDATE: only the user who last wrote may overwrite, OR the row has no prior writer
+-- This prevents any other authenticated user from silently wiping the library (C-1).
+CREATE POLICY "Library writer can update library"
+  ON component_library FOR UPDATE
+  TO authenticated
+  USING (updated_by IS NULL OR updated_by = auth.uid())
+  WITH CHECK (auth.uid() IS NOT NULL);
 
 -- Configurations: users see everyone's history (shared team view)
 CREATE POLICY "Authenticated users can read all configurations"
