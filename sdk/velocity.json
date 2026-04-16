@@ -1,8 +1,8 @@
 {
   "_note": "Sprint 0 unpointed (bootstrap). rollingAverage = mean of last 3 pointed sprints.",
   "bootstrap": 5,
-  "rollingAverage": 13,
-  "rollingWindow": 1,
+  "rollingAverage": 15.5,
+  "rollingWindow": 2,
   "history": [
     {
       "sprint": 1,
@@ -12,6 +12,15 @@
       "committed": ["TICKET-SSP-001","TICKET-SSP-002","TICKET-SSP-003","TICKET-SSP-004"],
       "findingsClosed": ["C-1","C-2","C-3"],
       "note": "All 13 points delivered. SSP-001/002 pending Supabase playbook execution."
+    },
+    {
+      "sprint": 2,
+      "name": "Sprint 2 — Exploitable Highs + Medium Sweep",
+      "endDate": "2026-04-16",
+      "pointsDelivered": 18,
+      "committed": ["TICKET-SSP-005","TICKET-SSP-006","TICKET-SSP-007","TICKET-SSP-008","TICKET-SSP-011","TICKET-SSP-012","TICKET-SSP-014","TICKET-SSP-015","TICKET-SSP-020","TICKET-SSP-021","TICKET-SSP-022"],
+      "findingsClosed": ["H-1","H-2","H-3","H-4","H-7","M-1","M-3","M-4","M-9","M-10","L-1"],
+      "note": "18 points delivered. 35 new tests added (22→57). H-7 needs DB migration for user_email column."
     }
   ]
 }

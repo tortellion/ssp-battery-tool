@@ -1,42 +1,42 @@
 {
   "lastVerified": "2026-04-16",
   "testCounts": {
-    "actual": 22,
-    "floor": 22,
-    "source": "npm test 2>&1 — 22 passed (6 files) — Sprint 1 SCRIBE Step 6"
+    "actual": 57,
+    "floor": 57,
+    "source": "npm test 2>&1 — 57 passed (12 files) — Sprint 2 SCRIBE Step 6"
   },
   "schema": {
     "tableCount": 3,
     "policyCount": 6,
     "sqlFileCount": 2,
-    "source": "grep -c on supabase/schema.sql — Sprint 1 SCRIBE Step 6"
+    "source": "grep -c on supabase/schema.sql — Sprint 2 SCRIBE Step 6. No schema changes this sprint."
   },
   "findings": {
-    "open": ["H-1","H-2","H-3","H-4","H-5","H-6","H-7","M-1","M-2","M-3","M-4","M-5","M-6","M-7","M-8","M-9","M-10","L-1","L-2","L-3","L-4","L-5"],
-    "closed": ["C-1","C-2","C-3"]
+    "open": ["H-5","H-6","M-2","M-5","M-6","M-7","M-8","L-2","L-3","L-4","L-5"],
+    "closed": ["C-1","C-2","C-3","H-1","H-2","H-3","H-4","H-7","M-1","M-3","M-4","M-9","M-10","L-1"]
   },
   "knownBugs": [
-    { "id": "C-1", "description": "Any authenticated user can wipe shared library via PUT /api/library", "status": "RESOLVED", "resolvedBy": "TICKET-SSP-002 sha=d4729f8 — MERGED_PENDING_PLAYBOOK" },
+    { "id": "C-1", "description": "Any authenticated user can permanently destroy the shared team library with a single PUT", "status": "RESOLVED", "resolvedBy": "TICKET-SSP-002 sha=d4729f8 — MERGED_PENDING_PLAYBOOK" },
     { "id": "C-2", "description": "Open self-registration — no domain restriction", "status": "RESOLVED", "resolvedBy": "TICKET-SSP-001 sha=0bd979a — MERGED_PENDING_PLAYBOOK" },
     { "id": "C-3", "description": "margin_percent=100 produces Infinity quote price", "status": "RESOLVED", "resolvedBy": "TICKET-SSP-003 sha=79a3e1d — ACTIVE" },
-    { "id": "H-1", "description": "No rate limiting on Anthropic API routes", "status": "OPEN" },
-    { "id": "H-2", "description": "Client-supplied library accepted without verification", "status": "OPEN" },
-    { "id": "H-3", "description": "Prompt injection via user fields — client-side sanitize only", "status": "OPEN" },
-    { "id": "H-4", "description": "History records rendered without guardrail re-validation", "status": "OPEN" },
+    { "id": "H-1", "description": "No rate limiting on Anthropic API routes", "status": "RESOLVED", "resolvedBy": "TICKET-SSP-005 sha=d30d0f2 — ACTIVE. Note: in-memory; Upstash upgrade path documented." },
+    { "id": "H-2", "description": "Client-supplied library accepted without verification", "status": "RESOLVED", "resolvedBy": "TICKET-SSP-006 sha=f32694c — ACTIVE" },
+    { "id": "H-3", "description": "Prompt injection via user fields — client-side sanitize only; system prompt exfiltration via extra JSON keys", "status": "RESOLVED", "resolvedBy": "TICKET-SSP-007 sha=25cc745 — ACTIVE" },
+    { "id": "H-4", "description": "History records stored/rendered without guardrail re-validation", "status": "RESOLVED", "resolvedBy": "TICKET-SSP-008 sha=82b02c3 — ACTIVE" },
     { "id": "H-5", "description": "library.js GET does not distinguish error types", "status": "OPEN" },
-    { "id": "H-6", "description": "configurations table missing UPDATE/DELETE RLS policies", "status": "OPEN" },
-    { "id": "H-7", "description": "user_email not fetched in history GET — all avatars show ??", "status": "OPEN" },
-    { "id": "M-1", "description": "sanitizeText is client-side security theater", "status": "OPEN" },
+    { "id": "H-6", "description": "configurations table missing explicit UPDATE/DELETE RLS policies", "status": "OPEN" },
+    { "id": "H-7", "description": "user_email not stored/fetched in history — all avatars show ??", "status": "RESOLVED", "resolvedBy": "TICKET-SSP-011 sha=5833f52 — ACTIVE. Note: requires user_email column migration on configurations table." },
+    { "id": "M-1", "description": "sanitizeText mislabeled as security control", "status": "RESOLVED", "resolvedBy": "TICKET-SSP-012 sha=957a673 — renamed to warnOnSuspiciousInput" },
     { "id": "M-2", "description": "calcCOGS allows negative/zero cost_usd", "status": "OPEN" },
-    { "id": "M-3", "description": "BANNED_RE misses semantic Wh/kg equivalents", "status": "OPEN" },
-    { "id": "M-4", "description": "validateConfigResponse rejects bms_g=0", "status": "OPEN" },
-    { "id": "M-5", "description": "Dimension notes check is substring-only, no arithmetic", "status": "OPEN" },
+    { "id": "M-3", "description": "BANNED_RE misses semantic Wh/kg equivalents (prose forms)", "status": "RESOLVED", "resolvedBy": "TICKET-SSP-014 sha=957a673 — ACTIVE" },
+    { "id": "M-4", "description": "validateConfigResponse rejects bms_g=0", "status": "RESOLVED", "resolvedBy": "TICKET-SSP-015 sha=957a673 — ACTIVE" },
+    { "id": "M-5", "description": "Dimension notes check is substring-only, no arithmetic validation", "status": "OPEN" },
     { "id": "M-6", "description": "History search concatenates without null guards", "status": "OPEN" },
     { "id": "M-7", "description": "Every cell edit triggers a full library PUT", "status": "OPEN" },
     { "id": "M-8", "description": "deleteRow uses window.confirm with no undo", "status": "OPEN" },
-    { "id": "M-9", "description": "settings.js upsert return value not checked", "status": "OPEN" },
-    { "id": "M-10", "description": "createAdminClient is dead code with service role key", "status": "OPEN" },
-    { "id": "L-1", "description": "quoteMarginkUsed typo", "status": "OPEN" },
+    { "id": "M-9", "description": "settings.js upsert return value not checked", "status": "RESOLVED", "resolvedBy": "TICKET-SSP-020 — verified already closed in Sprint 1 (settings.js line 27)" },
+    { "id": "M-10", "description": "createAdminClient is dead code with service role key reference", "status": "RESOLVED", "resolvedBy": "TICKET-SSP-021 sha=957a673 — deleted from lib/supabase.js" },
+    { "id": "L-1", "description": "quoteMarginkUsed typo", "status": "RESOLVED", "resolvedBy": "TICKET-SSP-022 sha=957a673 — renamed to quoteMarginUsed (4 sites)" },
     { "id": "L-2", "description": "parseWorkbook silent fallback on missing sheets", "status": "OPEN" },
     { "id": "L-3", "description": "xlsx 0.18.5 — CVE-2023-30533 prototype pollution", "status": "OPEN" },
     { "id": "L-4", "description": "Loading flash before middleware redirect", "status": "OPEN" },

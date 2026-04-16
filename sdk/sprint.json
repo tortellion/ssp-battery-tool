@@ -23,12 +23,24 @@
       "velocityPoints": 13,
       "findingsClosed": ["C-1","C-2","C-3"],
       "note": "SSP-001/002 MERGED_PENDING_PLAYBOOK. C-3 fully active. Tests 3→22."
+    },
+    {
+      "number": 2,
+      "name": "Sprint 2 — Exploitable Highs + Medium Sweep",
+      "goal": "Close H-1/H-2/H-3/H-4/H-7 + medium/low sweep M-1/M-3/M-4/M-9/M-10/L-1.",
+      "startDate": "2026-04-16",
+      "endDate": "2026-04-16",
+      "status": "DONE",
+      "committed": ["TICKET-SSP-005","TICKET-SSP-006","TICKET-SSP-007","TICKET-SSP-008","TICKET-SSP-011","TICKET-SSP-012","TICKET-SSP-014","TICKET-SSP-015","TICKET-SSP-020","TICKET-SSP-021","TICKET-SSP-022"],
+      "velocityPoints": 18,
+      "findingsClosed": ["H-1","H-2","H-3","H-4","H-7","M-1","M-3","M-4","M-9","M-10","L-1"],
+      "note": "All code-only. H-7 needs DB migration (user_email column on configurations). Rate limiter in-memory — Upstash upgrade path documented. Tests 22→57."
     }
   ],
   "current": {
-    "number": 2,
-    "name": "Sprint 2 — Exploitable Highs",
-    "goal": "Close H-1 (rate limiting), H-2 (server-side library fetch), H-3 (server-side sanitization + output whitelist), H-4 (guardrail validation on history).",
+    "number": 3,
+    "name": "Sprint 3 — Remaining Highs + UX Hardening",
+    "goal": "Close H-5 (library error logging), H-6 (RLS UPDATE/DELETE policies), M-2 (negative cost_usd), M-5 (dimension arithmetic), M-6 (null search guard), M-7 (debounce saves), M-8 (delete modal).",
     "status": "PLANNING",
     "committed": []
   }

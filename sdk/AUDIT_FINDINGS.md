@@ -78,7 +78,7 @@ done
 
 **Fix:** Add in-memory or Redis-backed rate limit per session.user.id (e.g., 20 req/min). Set an Anthropic API spending limit in the console immediately.
 
-**STATUS: OPEN**
+**STATUS: CLOSED — TICKET-SSP-005, sha=d30d0f2, 2026-04-16. Regression: __tests__/security/h1-rate-limit.test.js. ACTIVE — 20 req/60s in-memory per user; Upstash Redis upgrade path documented in lib/rateLimiter.js.**
 
 ---
 
@@ -103,7 +103,7 @@ Server sends fabricated library to the model. validateConfigResponse only checks
 
 **Fix:** In configure.js, fetch library from Supabase server-side and use stored version. Discard client-supplied library field entirely.
 
-**STATUS: OPEN**
+**STATUS: CLOSED — TICKET-SSP-006, sha=f32694c, 2026-04-16. Regression: __tests__/security/h2-server-library.test.js. ACTIVE.**
 
 ---
 
@@ -118,7 +118,7 @@ Server sends fabricated library to the model. validateConfigResponse only checks
 
 **Fix:** Server-side: sanitize all user-supplied string fields before embedding in model message. Return only whitelisted keys, not the raw parsed object.
 
-**STATUS: OPEN**
+**STATUS: CLOSED — TICKET-SSP-007, sha=25cc745, 2026-04-16. Regression: __tests__/security/h3-output-whitelist.test.js. ACTIVE.**
 
 ---
 
@@ -138,7 +138,7 @@ history.js performs no guardrail validation on spec_content before inserting. Re
 
 **Fix:** Run validateSpecSheet on spec_content before inserting in history.js. At render time, re-validate and show a warning banner if the stored record fails current guardrails.
 
-**STATUS: OPEN**
+**STATUS: CLOSED — TICKET-SSP-008, sha=82b02c3, 2026-04-16. Regression: __tests__/security/h4-history-guardrail.test.js. ACTIVE.**
 
 ---
 
@@ -183,7 +183,7 @@ history.js selects `user_id` (UUID), not `user_email`. `c.user_email` is undefin
 
 **Fix:** Store user_email explicitly in configurations table on insert (from session.user.email). Include it in the select().
 
-**STATUS: OPEN**
+**STATUS: CLOSED — TICKET-SSP-011, sha=5833f52, 2026-04-16. Regression: __tests__/security/h7-user-email.test.js. ACTIVE. Note: requires user_email column on configurations table — DB migration needed.**
 
 ---
 
@@ -197,7 +197,7 @@ history.js selects `user_id` (UUID), not `user_email`. `c.user_email` is undefin
 
 **Fix:** Move injection checking to the server. Rename client function to `warnOnSuspiciousInput`.
 
-**STATUS: OPEN**
+**STATUS: CLOSED — TICKET-SSP-012, sha=957a673, 2026-04-16. Regression: __tests__/smoke/mediumSweep.test.js::index.jsx uses warnOnSuspiciousInput not sanitizeText. ACTIVE.**
 
 ---
 
@@ -223,7 +223,7 @@ history.js selects `user_id` (UUID), not `user_email`. `c.user_email` is undefin
 
 **Fix:** Replace/augment BANNED_RE[0] with broader pattern covering `watt.?hours?\s*per\s*kilo` and per kg form.
 
-**STATUS: OPEN**
+**STATUS: CLOSED — TICKET-SSP-014, sha=957a673, 2026-04-16. Regression: __tests__/smoke/mediumSweep.test.js::BANNED_RE catches prose forms. ACTIVE.**
 
 ---
 
@@ -235,7 +235,7 @@ history.js selects `user_id` (UUID), not `user_email`. `c.user_email` is undefin
 
 **Fix:** Change check to `wb.bms_g === undefined || wb.bms_g === null` to allow zero values.
 
-**STATUS: OPEN**
+**STATUS: CLOSED — TICKET-SSP-015, sha=957a673, 2026-04-16. Regression: __tests__/smoke/mediumSweep.test.js::validateConfigResponse accepts bms_g of 0. ACTIVE.**
 
 ---
 
@@ -295,7 +295,7 @@ history.js selects `user_id` (UUID), not `user_email`. `c.user_email` is undefin
 
 **Fix:** Destructure `{ error }` from upsert and return 500 if present.
 
-**STATUS: OPEN**
+**STATUS: CLOSED — TICKET-SSP-020, 2026-04-16. Verified already closed in Sprint 1 (settings.js:27 checks error). No new regression test required — existing behavior confirmed correct.**
 
 ---
 
@@ -307,7 +307,7 @@ history.js selects `user_id` (UUID), not `user_email`. `c.user_email` is undefin
 
 **Fix:** Delete createAdminClient entirely.
 
-**STATUS: OPEN**
+**STATUS: CLOSED — TICKET-SSP-021, sha=957a673, 2026-04-16. Regression: __tests__/smoke/mediumSweep.test.js::supabase.js does not export createAdminClient. ACTIVE.**
 
 ---
 
@@ -319,7 +319,7 @@ history.js selects `user_id` (UUID), not `user_email`. `c.user_email` is undefin
 
 **Fix:** Rename to `quoteMarginUsed` throughout.
 
-**STATUS: OPEN**
+**STATUS: CLOSED — TICKET-SSP-022, sha=957a673, 2026-04-16. Regression: __tests__/smoke/mediumSweep.test.js::index.jsx uses quoteMarginUsed not quoteMarginkUsed. ACTIVE.**
 
 ---
 
