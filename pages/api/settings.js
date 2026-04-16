@@ -18,7 +18,13 @@ export default async function handler(req, res) {
 
   if (req.method === 'PUT') {
     const { settings } = req.body;
-    await supabase.from('user_settings').upsert({ user_id: session.user.id, data: settings });
+    if (!settings || typeof settings !== 'object') return res.status(400).json({ error: 'Invalid settings' });
+    const safe = {
+      ...settings,
+      margin_percent: Math.min(99, Math.max(0, Number(settings.margin_percent) || 0)),
+    };
+    const { error } = await supabase.from('user_settings').upsert({ user_id: session.user.id, data: safe });
+    if (error) return res.status(500).json({ error: 'Failed to save settings' });
     return res.json({ ok: true });
   }
 

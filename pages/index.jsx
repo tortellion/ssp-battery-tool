@@ -36,13 +36,15 @@ function calcCOGS(cfg, library, settings) {
   const bms  = library.bms_boards?.find(b=>b.id===cfg.bms_id);
   const cas  = library.cases?.find(c=>c.id===cfg.case_id);
   if(!cell || cell.cost_usd===null || !bms || bms.cost_usd===null) return null;
+  const margin = Math.min(99, Math.max(0, Number(settings.margin_percent) || 0));
+  if ((1 - margin / 100) <= 0) return null;
   const padCost=8, barCost=6, connCost=22, wireCost=38;
   const pads=Math.max(0,cfg.total_cells-1);
   const caseCost=cas?.cost_usd||0;
   const laborHrs=settings.base_hours+(settings.per_cell_hours*cfg.total_cells);
   const labor=laborHrs*settings.labor_rate;
   const cogs=(cell.cost_usd*cfg.total_cells)+bms.cost_usd+(padCost*pads)+barCost+connCost+wireCost+caseCost+labor;
-  return { cogs, quote:cogs/(1-(settings.margin_percent/100)), margin_pct:settings.margin_percent,
+  return { cogs, quote:cogs/(1-(margin/100)), margin_pct:margin,
     lines:[{label:`Cells (${cfg.total_cells}× ${cell.name})`,cost:cell.cost_usd*cfg.total_cells},{label:'BMS',cost:bms.cost_usd},{label:'Thermal management',cost:(padCost*pads)+barCost},{label:'Connectors & wiring',cost:connCost+wireCost},{label:'Case',cost:caseCost},{label:`Labor (${laborHrs.toFixed(1)}h @ $${settings.labor_rate}/hr)`,cost:labor}]
   };
 }
@@ -589,7 +591,13 @@ function SettingsTab({ settings, setSettings, toast }) {
         {[['margin_percent','Margin %'],['labor_rate','Labor Rate ($/hr)'],['base_hours','Base Assembly Hours'],['per_cell_hours','Hours Per Cell']].map(([k,l])=>(
           <div key={k} className="form-group">
             <label className="fl">{l}</label>
-            <input type="number" value={local[k]} onChange={e=>setLocal(s=>({...s,[k]:+e.target.value}))}/>
+            <input type="number" value={local[k]}
+              {...(k==='margin_percent' ? {min:0,max:99} : {})}
+              onChange={e=>{
+                let v=+e.target.value;
+                if(k==='margin_percent') v=Math.min(99,Math.max(0,v));
+                setLocal(s=>({...s,[k]:v}));
+              }}/>
           </div>
         ))}
         <button className="btn btn-primary" onClick={save} disabled={saving}>{saving?'Saving…':'Save Settings'}</button>
