@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import BatteryLayout from '../components/BatteryLayout';
 import { useUser, useSupabaseClient } from '@supabase/auth-helpers-react';
 import { useRouter } from 'next/router';
@@ -36,7 +36,7 @@ function calcCOGS(cfg, library, settings) {
   const cell = library.cells?.find(c=>c.id===cfg.cell_id);
   const bms  = library.bms_boards?.find(b=>b.id===cfg.bms_id);
   const cas  = library.cases?.find(c=>c.id===cfg.case_id);
-  if(!cell || cell.cost_usd===null || !bms || bms.cost_usd===null) return null;
+  if(!cell || cell.cost_usd===null || cell.cost_usd<=0 || !bms || bms.cost_usd===null || bms.cost_usd<=0) return null;
   const margin = Math.min(99, Math.max(0, Number(settings.margin_percent) || 0));
   if ((1 - margin / 100) <= 0) return null;
   const padCost=8, barCost=6, connCost=22, wireCost=38;
@@ -352,7 +352,10 @@ function LibraryTab({ library, setLibrary, toast }) {
   const [saving, setSaving] = useState(false);
   const [importing, setImporting] = useState(false);
   const [importMsg, setImportMsg] = useState(null);
+  const [pendingDelete, setPendingDelete] = useState(null);
   const isDemo = library?.is_demo !== false;
+  // M-7: debounce cell edits — batch rapid changes into one PUT per 500ms idle
+  const debounceRef = useRef(null);
 
   const saveLibrary = async (newLib, isDemo_=false) => {
     setSaving(true);
@@ -409,7 +412,9 @@ function LibraryTab({ library, setLibrary, toast }) {
   const updateCell = (ri, col, val) => {
     const newLib = JSON.parse(JSON.stringify(library));
     newLib[section][ri][col] = val;
-    saveLibrary(newLib, newLib.is_demo||false);
+    setLibrary({...newLib, is_demo: newLib.is_demo||false});
+    clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => saveLibrary(newLib, newLib.is_demo||false), 500);
   };
 
   const addRow = () => {
@@ -421,10 +426,15 @@ function LibraryTab({ library, setLibrary, toast }) {
   };
 
   const deleteRow = (ri) => {
-    if(!confirm('Delete this row?')) return;
-    const newLib = JSON.parse(JSON.stringify(library));
-    newLib[section].splice(ri,1);
-    saveLibrary(newLib, newLib.is_demo||false);
+    if (pendingDelete === ri) {
+      const newLib = JSON.parse(JSON.stringify(library));
+      newLib[section].splice(ri, 1);
+      setPendingDelete(null);
+      saveLibrary(newLib, newLib.is_demo||false);
+    } else {
+      setPendingDelete(ri);
+      setTimeout(() => setPendingDelete(p => p === ri ? null : p), 3000);
+    }
   };
 
   const items = library?.[section]||[];
@@ -483,7 +493,10 @@ function LibraryTab({ library, setLibrary, toast }) {
                     </td>
                   );
                 })}
-                <td><button style={{background:'none',border:'none',cursor:'pointer',color:'#dc2626',fontSize:12,opacity:0,transition:'opacity .15s'}} className="del-btn" onClick={()=>deleteRow(ri)}>✕</button></td>
+                <td>{pendingDelete===ri
+                  ? <span style={{fontSize:11}}><button style={{background:'#dc2626',color:'#fff',border:'none',borderRadius:3,cursor:'pointer',padding:'1px 6px',marginRight:4}} onClick={()=>deleteRow(ri)}>Confirm</button><button style={{background:'none',border:'none',cursor:'pointer',color:'#94a3b8',fontSize:11}} onClick={()=>setPendingDelete(null)}>Cancel</button></span>
+                  : <button style={{background:'none',border:'none',cursor:'pointer',color:'#dc2626',fontSize:12,opacity:0,transition:'opacity .15s'}} className="del-btn" onClick={()=>deleteRow(ri)}>✕</button>
+                }</td>
               </tr>
             ))}
           </tbody>
@@ -536,7 +549,7 @@ function HistoryTab() {
     fetch('/api/history').then(r=>r.json()).then(d=>{ setConfigs(Array.isArray(d)?d:[]); setLoading(false); }).catch(()=>setLoading(false));
   },[]);
 
-  const filtered = configs.filter(c=>!query||(c.company+c.product+c.vertical).toLowerCase().includes(query.toLowerCase()));
+  const filtered = configs.filter(c=>!query||((c.company||'')+(c.product||'')+(c.vertical||'')).toLowerCase().includes(query.toLowerCase()));
   const initials = (email) => email?email.slice(0,2).toUpperCase():'??';
 
   return (

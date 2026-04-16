@@ -66,6 +66,16 @@ CREATE POLICY "Users can insert their own configurations"
   ON configurations FOR INSERT
   TO authenticated WITH CHECK (auth.uid() = user_id);
 
+-- Configurations UPDATE: users can only update their own rows (H-6)
+CREATE POLICY "Users can update their own configurations"
+  ON configurations FOR UPDATE
+  TO authenticated USING (auth.uid() = user_id);
+
+-- Configurations DELETE: users can only delete their own rows (H-6)
+CREATE POLICY "Users can delete their own configurations"
+  ON configurations FOR DELETE
+  TO authenticated USING (auth.uid() = user_id);
+
 -- Settings: users can only read and write their own settings
 CREATE POLICY "Users can manage their own settings"
   ON user_settings FOR ALL

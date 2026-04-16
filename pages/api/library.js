@@ -14,7 +14,15 @@ export default async function handler(req, res) {
       .limit(1)
       .single();
 
-    if (error || !data) {
+    // H-5: distinguish "no row yet" (PGRST116) from genuine connectivity failure
+    if (error) {
+      if (error.code === 'PGRST116') {
+        return res.json({ library: DEMO_LIBRARY, is_demo: true });
+      }
+      console.error('library GET error:', error.code, error.message);
+      return res.json({ library: DEMO_LIBRARY, is_demo: true, warning: 'database_unavailable' });
+    }
+    if (!data) {
       return res.json({ library: DEMO_LIBRARY, is_demo: true });
     }
     return res.json({ library: data.data, is_demo: data.is_demo, updated_at: data.updated_at });
