@@ -35,12 +35,24 @@
       "velocityPoints": 18,
       "findingsClosed": ["H-1","H-2","H-3","H-4","H-7","M-1","M-3","M-4","M-9","M-10","L-1"],
       "note": "All code-only. H-7 needs DB migration (user_email column on configurations). Rate limiter in-memory — Upstash upgrade path documented. Tests 22→57."
+    },
+    {
+      "number": 3,
+      "name": "Sprint 3 — Remaining Highs + UX Hardening",
+      "goal": "Close H-5/H-6/M-2/M-5/M-6/M-7/M-8.",
+      "startDate": "2026-04-16",
+      "endDate": "2026-04-16",
+      "status": "DONE",
+      "committed": ["TICKET-SSP-009","TICKET-SSP-010","TICKET-SSP-013","TICKET-SSP-016","TICKET-SSP-017","TICKET-SSP-018","TICKET-SSP-019"],
+      "velocityPoints": 14,
+      "findingsClosed": ["H-5","H-6","M-2","M-5","M-6","M-7","M-8"],
+      "note": "H-6 MERGED_PENDING_PLAYBOOK — run updated schema.sql in Supabase. All others active. Tests 57→73. Policies 6→8."
     }
   ],
   "current": {
-    "number": 3,
-    "name": "Sprint 3 — Remaining Highs + UX Hardening",
-    "goal": "Close H-5 (library error logging), H-6 (RLS UPDATE/DELETE policies), M-2 (negative cost_usd), M-5 (dimension arithmetic), M-6 (null search guard), M-7 (debounce saves), M-8 (delete modal).",
+    "number": 4,
+    "name": "Sprint 4 — Low Severity + Package Hygiene",
+    "goal": "Close L-2 (parseWorkbook fallback warning), L-3 (xlsx CVE upgrade), L-4 (loading flash), L-5 (migrate to @supabase/ssr).",
     "status": "PLANNING",
     "committed": []
   }

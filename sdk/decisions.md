@@ -3,6 +3,9 @@
 
 ---
 
+DEC-004 — Sprint 3 close, 2026-04-16, sha=ef8c54e
+Closed H-5/H-6/M-2/M-5/M-6/M-7/M-8 (7 findings). H-6 requires Supabase schema migration (policies 6→8). M-8: implemented as inline pendingDelete state with 3s auto-cancel rather than full soft-delete undo toast — chosen to avoid adding a toast infrastructure dependency for current team size of 3-5 users. M-5: dimension notes check now requires numeric value adjacent to keyword via regex rather than substring — model prompt (CONFIG_SYSTEM_PROMPT) already instructs arithmetic in notes so this tightens validation without breaking real outputs. Tests 57→73. Rolling velocity 13/18/14 → avg 15 pts/sprint.
+
 DEC-003 — Sprint 2 close, 2026-04-16, sha=d30d0f2
 Closed H-1/H-2/H-3/H-4/H-7 + M-1/M-3/M-4/M-9/M-10/L-1 (11 findings). All fixes code-only except H-7 which requires a DB migration adding user_email column to configurations table. H-1 rate limiter is in-memory (per-instance) — acceptable for current single-instance deployment; Upstash Redis upgrade path documented. Decision: H-3 output whitelist returns only the 3 schema-defined keys; any extra model output is silently dropped rather than errored — chosen to be non-breaking for the client. Test floor raised 22→57. Rolling velocity 13→15.5 pts/sprint (2-sprint window).
 

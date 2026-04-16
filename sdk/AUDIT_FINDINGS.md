@@ -153,7 +153,7 @@ If SUPABASE_URL or ANON_KEY is misconfigured, createServerClient throws synchron
 
 **Fix:** Distinguish between "no row found" and "query failed" by inspecting error.code. Return `{ library: DEMO_LIBRARY, is_demo: true, warning: 'database unavailable' }` on genuine errors.
 
-**STATUS: OPEN**
+**STATUS: CLOSED — TICKET-SSP-009, sha=ef8c54e, 2026-04-16. Regression: __tests__/security/h5-library-errors.test.js. ACTIVE.**
 
 ---
 
@@ -168,7 +168,7 @@ Missing FOR UPDATE and FOR DELETE policies. Currently safe (missing policy = DEN
 
 **Fix:** Explicitly add FOR UPDATE and FOR DELETE policies with `USING (auth.uid() = user_id)`.
 
-**STATUS: OPEN**
+**STATUS: CLOSED — TICKET-SSP-010, sha=ef8c54e, 2026-04-16. Regression: __tests__/security/h6-rls-policies.test.js. MERGED_PENDING_PLAYBOOK: run updated schema.sql in Supabase dashboard.**
 
 ---
 
@@ -209,7 +209,7 @@ history.js selects `user_id` (UUID), not `user_email`. `c.user_email` is undefin
 
 **Fix:** In calcCOGS, validate cost_usd > 0 for both cell and BMS. Add library validation pass on import that flags non-positive costs.
 
-**STATUS: OPEN**
+**STATUS: CLOSED — TICKET-SSP-013, sha=ef8c54e, 2026-04-16. Regression: __tests__/smoke/sprint3Sweep.test.js::calcCOGS guards against cost_usd <= 0. ACTIVE.**
 
 ---
 
@@ -247,7 +247,7 @@ history.js selects `user_id` (UUID), not `user_email`. `c.user_email` is undefin
 
 **Fix:** Require notes contain a numeric expression pattern adjacent to keywords, or validate margin arithmetic server-side directly from margin fields.
 
-**STATUS: OPEN**
+**STATUS: CLOSED — TICKET-SSP-016, sha=ef8c54e, 2026-04-16. Regression: __tests__/smoke/sprint3Sweep.test.js::validateConfigResponse rejects notes with dimension keywords but no numbers. ACTIVE.**
 
 ---
 
@@ -259,7 +259,7 @@ history.js selects `user_id` (UUID), not `user_email`. `c.user_email` is undefin
 
 **Fix:** Use `(c.company||'')+(c.product||'')+(c.vertical||'')`.
 
-**STATUS: OPEN**
+**STATUS: CLOSED — TICKET-SSP-017, sha=ef8c54e, 2026-04-16. Regression: __tests__/smoke/sprint3Sweep.test.js::history search uses null-safe concatenation. ACTIVE.**
 
 ---
 
@@ -271,7 +271,7 @@ history.js selects `user_id` (UUID), not `user_email`. `c.user_email` is undefin
 
 **Fix:** Debounce saveLibrary with 500ms delay. Or add a "Save" button per section rather than auto-saving on every cell blur.
 
-**STATUS: OPEN**
+**STATUS: CLOSED — TICKET-SSP-018, sha=ef8c54e, 2026-04-16. Regression: __tests__/smoke/sprint3Sweep.test.js::updateCell uses debounceRef. ACTIVE.**
 
 ---
 
@@ -283,7 +283,7 @@ history.js selects `user_id` (UUID), not `user_email`. `c.user_email` is undefin
 
 **Fix:** Replace confirm() with an in-app confirmation modal. Implement soft-delete with 10-second undo toast.
 
-**STATUS: OPEN**
+**STATUS: CLOSED — TICKET-SSP-019, sha=ef8c54e, 2026-04-16. Regression: __tests__/smoke/sprint3Sweep.test.js::deleteRow does not use window.confirm. ACTIVE. Note: implemented as inline pendingDelete state (3s auto-cancel) rather than full soft-delete undo toast — acceptable for current team size.**
 
 ---
 

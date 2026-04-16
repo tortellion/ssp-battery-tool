@@ -1,0 +1,35 @@
+{
+  "number": 3,
+  "name": "Sprint 3 — Remaining Highs + UX Hardening",
+  "goal": "Close H-5 (library error logging), H-6 (RLS UPDATE/DELETE policies), M-2 (negative cost_usd), M-5 (dimension arithmetic), M-6 (null search guard), M-7 (debounce saves), M-8 (delete modal).",
+  "startDate": "2026-04-16",
+  "endDate": "2026-04-16",
+  "status": "DONE",
+  "committed": [
+    "TICKET-SSP-009",
+    "TICKET-SSP-010",
+    "TICKET-SSP-013",
+    "TICKET-SSP-016",
+    "TICKET-SSP-017",
+    "TICKET-SSP-018",
+    "TICKET-SSP-019"
+  ],
+  "velocityPoints": 14,
+  "prs": [
+    { "branch": "main", "sha": "ef8c54e", "findings": ["H-5","H-6","M-2","M-5","M-6","M-7","M-8"] }
+  ],
+  "testDelta": {
+    "before": 57,
+    "after": 73,
+    "delta": 16
+  },
+  "schemaDelta": {
+    "tablesBefore": 3,
+    "tablesAfter": 3,
+    "policiesBefore": 6,
+    "policiesAfter": 8,
+    "note": "H-6: added FOR UPDATE and FOR DELETE policies on configurations table, scoped to auth.uid()=user_id."
+  },
+  "findingsClosed": ["H-5","H-6","M-2","M-5","M-6","M-7","M-8"],
+  "notes": "H-6 schema change requires running updated schema.sql in Supabase dashboard (MERGED_PENDING_PLAYBOOK). All other fixes are code-only and immediately active. M-8 uses inline pendingDelete state (3s auto-cancel) instead of window.confirm — no modal component added. M-7 debounce is 500ms; immediate optimistic local state update prevents UI stutter."
+}

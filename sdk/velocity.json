@@ -1,8 +1,8 @@
 {
   "_note": "Sprint 0 unpointed (bootstrap). rollingAverage = mean of last 3 pointed sprints.",
   "bootstrap": 5,
-  "rollingAverage": 15.5,
-  "rollingWindow": 2,
+  "rollingAverage": 15,
+  "rollingWindow": 3,
   "history": [
     {
       "sprint": 1,
@@ -21,6 +21,15 @@
       "committed": ["TICKET-SSP-005","TICKET-SSP-006","TICKET-SSP-007","TICKET-SSP-008","TICKET-SSP-011","TICKET-SSP-012","TICKET-SSP-014","TICKET-SSP-015","TICKET-SSP-020","TICKET-SSP-021","TICKET-SSP-022"],
       "findingsClosed": ["H-1","H-2","H-3","H-4","H-7","M-1","M-3","M-4","M-9","M-10","L-1"],
       "note": "18 points delivered. 35 new tests added (22→57). H-7 needs DB migration for user_email column."
+    },
+    {
+      "sprint": 3,
+      "name": "Sprint 3 — Remaining Highs + UX Hardening",
+      "endDate": "2026-04-16",
+      "pointsDelivered": 14,
+      "committed": ["TICKET-SSP-009","TICKET-SSP-010","TICKET-SSP-013","TICKET-SSP-016","TICKET-SSP-017","TICKET-SSP-018","TICKET-SSP-019"],
+      "findingsClosed": ["H-5","H-6","M-2","M-5","M-6","M-7","M-8"],
+      "note": "14 points delivered. 16 new tests added (57→73). H-6 needs Supabase schema migration. Policies 6→8."
     }
   ]
 }
