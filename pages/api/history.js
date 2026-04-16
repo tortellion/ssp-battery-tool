@@ -10,7 +10,7 @@ export default async function handler(req, res) {
   if (req.method === 'GET') {
     const { data, error } = await supabase
       .from('configurations')
-      .select('id, company, product, vertical, voltage, capacity_wh, spec_content, cfg_summary, created_at, user_id')
+      .select('id, company, product, vertical, voltage, capacity_wh, spec_content, cfg_summary, created_at, user_id, user_email')
       .order('created_at', { ascending: false })
       .limit(50);
 
@@ -34,6 +34,7 @@ export default async function handler(req, res) {
       .from('configurations')
       .insert({
         user_id: session.user.id,
+        user_email: session.user.email,
         company, product, vertical, voltage, capacity_wh,
         spec_content, cfg_summary
       })
